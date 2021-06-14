@@ -13,8 +13,9 @@ Used prettier and ESLint from VSCode.
 
 Endpoint:
 
-To process JPEG images : /api/images?filename=<filename>&width=<width>&height=<height> or /api/images?ilename=<filename>&width=<width>&height=<height>&format=jpeg
-To process PNG images : /api/images?ilename=<filename>&width=<width>&height=<height>&format=png
+To process JPEG images : /api/images?filename=<filename>&width=<width>&height=<height> or 
+                         /api/images?filename=<filename>&width=<width>&height=<height>&format=jpeg
+To process PNG images :  /api/images?filename=<filename>&width=<width>&height=<height>&format=png
 
 Other functionalities:
 
