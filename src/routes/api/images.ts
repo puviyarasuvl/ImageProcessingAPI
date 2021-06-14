@@ -1,10 +1,10 @@
 import express from 'express';
-import resizeJPEG from './resizeJPEG';
+import resize from '../../utilities/resize';
 
 const images = express.Router();
 
 images.get('/', (req, res) => {
-    resizeJPEG(req, res);
+    resize(req, res);
 });
 
 export default images;

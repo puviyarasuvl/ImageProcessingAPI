@@ -39,32 +39,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var supertest_1 = __importDefault(require("supertest"));
-var index_1 = __importDefault(require("../index"));
-var request = supertest_1.default(index_1.default);
-describe('Test endpoint responses', function () {
-    it('gets the /api/images?filename=fjord&width=200&height=200', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images?filename=fjord&width=200&height=200')];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('should return 404 for invalid endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('api/image')];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(404);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-});
+var sharp_1 = __importDefault(require("sharp"));
+var resizeJPEG = function (srcFilePath, reqWidth, reqHeight, dstFilePath) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, sharp_1.default(srcFilePath)
+                    .resize(reqWidth, reqHeight)
+                    .toFormat('jpeg')
+                    .toFile(dstFilePath)];
+            case 1:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.default = resizeJPEG;

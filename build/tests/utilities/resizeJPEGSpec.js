@@ -39,30 +39,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var supertest_1 = __importDefault(require("supertest"));
-var index_1 = __importDefault(require("../index"));
-var request = supertest_1.default(index_1.default);
-describe('Test endpoint responses', function () {
-    it('gets the /api/images?filename=fjord&width=200&height=200', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
+var path_1 = __importDefault(require("path"));
+var resizeJPEG_1 = __importDefault(require("../../utilities/resizeJPEG"));
+describe('Test image processing', function () {
+    it('should get the resized image as per provided width and height', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var srcFilePath, dstFileName, dstDir, dstFilePath;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images?filename=fjord&width=200&height=200')];
+                case 0:
+                    srcFilePath = path_1.default.join(__dirname + '../../../../images/full/fjord.jpg');
+                    dstFileName = 'fjord' + 250 + 250 + '.jpg';
+                    dstDir = path_1.default.join(__dirname + '../../../../images/thumb/');
+                    dstFilePath = dstDir + dstFileName;
+                    return [4 /*yield*/, resizeJPEG_1.default(srcFilePath, 250, 250, dstFilePath)];
                 case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('should return 404 for invalid endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('api/image')];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(404);
+                    _a.sent();
+                    expect(dstFilePath).toBeTruthy();
                     return [2 /*return*/];
             }
         });

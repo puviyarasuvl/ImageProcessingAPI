@@ -1,21 +1,49 @@
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
-import sharp from 'sharp';
+import resizeJPEG from './resizeJPEG';
+import resizePNG from './resizePNG';
 
-const resizeJPEG = async (req: express.Request, res: express.Response) => {
+const resize = async (req: express.Request, res: express.Response) => {
+    // Check the URL params and return error if not present
+    if (
+        req.query.filename === undefined ||
+        req.query.width === undefined ||
+        req.query.height === undefined
+    ) {
+        res.send(
+            `Error: Please check the URL parameters and enter valid parameters`
+        );
+        return;
+    }
+
     // Get the full size filename and resize details from URL
     const reqFileName: string = req.query.filename as string;
     const reqWidth: number = parseInt(req.query.width as string);
     const reqHeight: number = parseInt(req.query.height as string);
 
+    let fileFormat: string = req.query.format as string;
+    let fileExtension: string = '.' + fileFormat;
+
+    // If no file format is specified consider jpeg as default
+    if (fileFormat === undefined) {
+        fileFormat = 'jpeg';
+        fileExtension = '.jpg';
+    }
+
     const srcFilePath: string = path.join(
-        __dirname + '../../../../images/full/' + reqFileName + '.jpg'
+        __dirname + '../../../images/full/' + reqFileName + fileExtension
     );
 
+    if (isNaN(reqWidth) || isNaN(reqHeight)) {
+        res.send(`Error: Please enter valid number for width and height`);
+        return;
+    }
+
     // Create destination (resized) filename using URL parameters
-    const dstFileName: string = reqFileName + reqWidth + reqHeight + '.jpg';
-    const dstDir: string = path.join(__dirname + '../../../../images/thumb/');
+    const dstFileName: string =
+        reqFileName + reqWidth + reqHeight + fileExtension;
+    const dstDir: string = path.join(__dirname + '../../../images/thumb/');
     const dstFilePath: string = dstDir + dstFileName;
 
     console.log(dstFilePath);
@@ -26,7 +54,7 @@ const resizeJPEG = async (req: express.Request, res: express.Response) => {
             fs.accessSync(srcFilePath, fs.constants.F_OK);
             console.log(`Requested file presents in full dir`);
         } catch (err) {
-            res.send(`Requested file is not present in full dir`);
+            res.send(`Error: Requested file is not present in full dir`);
             return;
         }
 
@@ -50,18 +78,19 @@ const resizeJPEG = async (req: express.Request, res: express.Response) => {
             try {
                 fs.mkdirSync(dstDir);
             } catch (err) {
-                res.send(`Failed to create dir`);
+                res.send(`Error: Failed to create dir`);
                 return;
             }
         }
 
         // Resizing for the first time. Call sharp.
-        console.log(`Calling Sharp for resizing`);
+        console.log(`Calling Sharp for resizing, format : ${fileFormat}`);
 
-        await sharp(srcFilePath)
-            .resize(reqWidth, reqHeight)
-            .toFormat('jpeg')
-            .toFile(dstFilePath);
+        if (fileFormat === 'jpeg') {
+            await resizeJPEG(srcFilePath, reqWidth, reqHeight, dstFilePath);
+        } else if (fileFormat === 'png') {
+            await resizePNG(srcFilePath, reqWidth, reqHeight, dstFilePath);
+        }
 
         // Send the resized image
         res.sendFile(dstFilePath);
@@ -71,4 +100,4 @@ const resizeJPEG = async (req: express.Request, res: express.Response) => {
     }
 };
 
-export default resizeJPEG;
+export default resize;
