@@ -12,7 +12,7 @@ describe('Test endpoint responses', () => {
     });
 
     it('should return 404 for invalid endpoint', async () => {
-        const response = await request.get('api/image');
+        const response = await request.get('/api/image');
         expect(response.status).toBe(404);
     });
 });

@@ -18,12 +18,12 @@ const resize = async (req: express.Request, res: express.Response) => {
     }
 
     // Get the full size filename and resize details from URL
-    const reqFileName: string = req.query.filename as string;
-    const reqWidth: number = parseInt(req.query.width as string);
-    const reqHeight: number = parseInt(req.query.height as string);
+    const reqFileName = req.query.filename as string;
+    const reqWidth = parseInt(req.query.width as string);
+    const reqHeight = parseInt(req.query.height as string);
 
-    let fileFormat: string = req.query.format as string;
-    let fileExtension: string = '.' + fileFormat;
+    let fileFormat = req.query.format as string;
+    let fileExtension = '.' + fileFormat;
 
     // If no file format is specified consider jpeg as default
     if (fileFormat === undefined) {

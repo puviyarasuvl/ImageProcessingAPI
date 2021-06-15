@@ -8,14 +8,17 @@ npm run build -> to compile
 npm run jasmine -> to execute unit test
 npm run test -> to complile and run unit test
 npm run start -> to start development server
-
-Used prettier and ESLint from VSCode.
+npm run lint -> to check for linting errors
+npm run prettier -> to run prettier
 
 Endpoint:
 
-To process JPEG images : /api/images?filename=<filename>&width=<width>&height=<height> or 
-                         /api/images?filename=<filename>&width=<width>&height=<height>&format=jpeg
-To process PNG images :  /api/images?filename=<filename>&width=<width>&height=<height>&format=png
+To process JPEG images :
+/api/images?filename=<filename>&width=<width>&height=<height> or
+/api/images?filename=<filename>&width=<width>&height=<height>&format=jpeg
+
+To process PNG images :
+/api/images?filename=<filename>&width=<width>&height=<height>&format=png
 
 Other functionalities:
 
